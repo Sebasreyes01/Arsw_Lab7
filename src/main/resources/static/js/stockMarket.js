@@ -1,7 +1,7 @@
 var StockMarket = (function(){
 
     var instance = axios.create({
-        baseURL: 'https://localhost:8080/stockmarket'
+        baseURL: 'https://arsw-lab-7.herokuapp.com/stockmarket'
     });
 
     var getInfo = function () {

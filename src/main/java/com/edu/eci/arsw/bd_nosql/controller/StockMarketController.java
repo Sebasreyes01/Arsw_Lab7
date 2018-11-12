@@ -16,7 +16,7 @@ public class StockMarketController {
     @Autowired
     StockMarketService sms;
 
-    @CrossOrigin(origins = "*")
+//    @CrossOrigin(origins = "*")
     @RequestMapping(method = RequestMethod.GET, path = "/intraday/{symbol}/{interval}")
     public ResponseEntity<?> handlerGetResourceStockMarketintraday(@PathVariable String symbol, @PathVariable String interval) {
         try {
@@ -27,7 +27,7 @@ public class StockMarketController {
         }
     }
 
-    @CrossOrigin(origins = "*")
+//    @CrossOrigin(origins = "*")
     @RequestMapping(method = RequestMethod.GET, path = "/{function}/{symbol}")
     public ResponseEntity<?> handlerGetResourceStockMarket(@PathVariable String function, @PathVariable String symbol) {
         try {
