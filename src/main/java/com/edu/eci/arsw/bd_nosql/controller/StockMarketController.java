@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/stockmarket")
 public class StockMarketController {
@@ -16,7 +17,6 @@ public class StockMarketController {
     @Autowired
     StockMarketService sms;
 
-//    @CrossOrigin(origins = "*")
     @RequestMapping(method = RequestMethod.GET, path = "/intraday/{symbol}/{interval}")
     public ResponseEntity<?> handlerGetResourceStockMarketintraday(@PathVariable String symbol, @PathVariable String interval) {
         try {
@@ -27,7 +27,6 @@ public class StockMarketController {
         }
     }
 
-//    @CrossOrigin(origins = "*")
     @RequestMapping(method = RequestMethod.GET, path = "/{function}/{symbol}")
     public ResponseEntity<?> handlerGetResourceStockMarket(@PathVariable String function, @PathVariable String symbol) {
         try {

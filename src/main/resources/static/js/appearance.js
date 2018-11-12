@@ -43,9 +43,17 @@ var Appearance = (function () {
         }
     };
 
+    var clearInput = function () {
+        if(document.getElementsByClassName("active")[0].id !== "intraday") {
+            var input = document.getElementById("inp");
+            input.value = "";
+        }
+    };
+
     return {
         changeActive:changeActive,
-        interval:interval
+        interval:interval,
+        clearInput:clearInput
     }
 
 })();
