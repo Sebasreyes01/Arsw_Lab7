@@ -16,7 +16,7 @@
     <link href="css/cover.css" rel="stylesheet">
   </head>
 
-  <body class="text-center">
+  <body class="text-center" onload="Appearance.interval()">
 
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
       <header class="masthead mb-auto">
@@ -24,17 +24,20 @@
           <h3 class="masthead-brand">Stock Market</h3>
           <nav class="nav nav-masthead justify-content-center">
             <!--<a class="nav-link active">Intra-day</a>-->
-            <a class="nav-link active">Intra-day</a>
-            <a class="nav-link">Daily</a>
-            <a class="nav-link">Weekly</a>
-            <a class="nav-link">Monthly</a>
+            <a id="intraday" class="pointer nav-link active" onclick="Appearance.changeActive(event); Appearance.interval()">Intra-day</a>
+            <a id="daily" class="pointer nav-link" onclick="Appearance.changeActive(event); Appearance.interval()">Daily</a>
+            <a id="weekly" class="pointer nav-link" onclick="Appearance.changeActive(event); Appearance.interval()">Weekly</a>
+            <a id="monthly" class="pointer nav-link" onclick="Appearance.changeActive(event); Appearance.interval()">Monthly</a>
           </nav>
         </div>
       </header>
 
       <main role="main" class="inner cover">
-          <input id="inp" placeholder="e.g. msft" maxlength="5">
-          <button id="btn">Search</button>
+          <div id="interval">
+            <input id="inp" placeholder="e.g. msft" maxlength="5">
+          </div><br>
+          <button id="btn" onclick="StockMarket.getInfo()">Search</button><br>
+          <div id="info"></div>
       </main>
 
       <footer class="mastfoot mt-auto">
@@ -52,6 +55,9 @@
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="js/appearance.js"></script>
+    <script src="js/stockMarket.js"></script>
   
 
 </body></html>
