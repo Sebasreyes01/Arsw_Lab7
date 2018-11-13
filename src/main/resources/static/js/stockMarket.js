@@ -1,53 +1,40 @@
 var StockMarket = (function(){
 
     var instance = axios.create({
-        // baseURL: 'https://arsw-lab-7.herokuapp.com/stockmarket',
-        baseURL: 'http://localhost:8080/stockmarket',
-        headers: {'Access-Control-Allow-Origin': 'http://localhost:8080'}
+        baseURL: 'https://arsw-lab-7.herokuapp.com/stockmarket'
+        // baseURL: 'http://localhost:8080/stockmarket',
+        // headers: {'Access-Control-Allow-Origin': 'http://localhost:8080'}
     });
 
     var getInfo = function () {
         var func = document.getElementsByClassName("active")[0].id;
         var symbol = document.getElementById("inp").value;
-        console.log(func);
         if(func === "intraday") {
             instance.get('/' + func + '/' + symbol + '/' + document.getElementById("select").value)
                 .then(function (response) {
-                    // var keys = Object.keys(response.data[Object.keys(response.data)[1]]);
-                    // var cells = Object.keys(response.data[Object.keys(response.data)[1]][keys[0]]);
-                    console.log(response.data);
-                    // console.log(keys);
-                    // console.log(cells);
-                    // console.log(response.data[Object.keys(response.data)[1]][keys[0]][cells[0]]);
-                    // console.log(Object.keys(response.data));
-                    // var n = Object.keys(response.data)[1];
-                    // console.log(Object.keys(response.data)[1]);
-                    // console.log(response.data[n]);
-                    // console.log(Object.keys(response.data[Object.keys(response.data)[1]]).length);
-                    // var div = document.getElementById("info");
-                    // var p = document.createElement("p");
-                    // var pText = document.createTextNode(response.data);
-                    // p.appendChild(pText);
-                    // div.appendChild(p);
+                    // console.log(response.data);
                     _generate_table(response.data);
                 })
                 .catch(function (error) {
-                    // handle error
+                    var div = document.getElementById("info");
+                    var p = document.createElement("p");
+                    var pt = document.createTextNode("Error");
+                    p.appendChild(pt);
+                    div.appendChild(p);
                     console.log(error);
                 });
         } else {
             instance.get('/' + func + '/' + symbol)
                 .then(function (response) {
                     // console.log(response.data);
-                    // var div = document.getElementById("info");
-                    // var p = document.createElement("p");
-                    // var pText = document.createTextNode(response.data);
-                    // p.appendChild(pText);
-                    // div.appendChild(p);
                     _generate_table(response.data);
                 })
                 .catch(function (error) {
-                    // handle error
+                    var div = document.getElementById("info");
+                    var p = document.createElement("p");
+                    var pt = document.createTextNode("Error");
+                    p.appendChild(pt);
+                    div.appendChild(p);
                     console.log(error);
                 });
         }
