@@ -1,9 +1,9 @@
 var StockMarket = (function(){
 
     var instance = axios.create({
-        // baseURL: 'https://arsw-lab-7.herokuapp.com/stockmarket'
-        baseURL: 'http://localhost:8080/stockmarket',
-        headers: {'Access-Control-Allow-Origin': 'http://localhost:8080'}
+        baseURL: 'https://arsw-lab-7.herokuapp.com/stockmarket'
+        // baseURL: 'http://localhost:8080/stockmarket',
+        // headers: {'Access-Control-Allow-Origin': 'http://localhost:8080'}
     });
 
     var getInfo = function () {
