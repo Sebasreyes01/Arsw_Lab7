@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,15 +26,37 @@ public class StockMarketController {
     @RequestMapping(method = RequestMethod.GET, path = "/intraday/{symbol}/{interval}")
     public ResponseEntity<?> handlerGetResourceStockMarketintraday(@PathVariable String symbol, @PathVariable String interval) {
         try {
+            LocalDateTime now = LocalDateTime.now();
+            int day = now.getDayOfYear();
+            int year = now.getYear();
+            Stock stockDB = repository.findByFunctionAndSymbolAndInterval("intraday", symbol, interval);
+
             String ans;
-            if(repository.findByFunctionAndSymbolAndInterval("intraday", symbol, interval) == null) {
-                ans = sms.stockInfo("TIME_SERIES_INTRADAY", symbol, interval);
-                repository.save(new Stock("intraday", symbol, interval, ans));
-//                System.out.println("llamo API externo");
+            if(stockDB != null) {
+                if(stockDB.date.getDayOfYear() < day || stockDB.date.getYear() < year) {
+                    repository.deleteById(stockDB.id);
+                    ans = sms.stockInfo("TIME_SERIES_INTRADAY", symbol, interval);
+                    repository.save(new Stock(now,"intraday", symbol, interval, ans));
+                } else {
+                    ans = stockDB.info;
+                }
             } else {
-                ans = repository.findByFunctionAndSymbolAndInterval("intraday", symbol, interval).info;
-//                System.out.println("llamo DB externa");
+                ans = sms.stockInfo("TIME_SERIES_INTRADAY", symbol, interval);
+                repository.save(new Stock(now,"intraday", symbol, interval, ans));
             }
+
+//            if(stockDB != null && (stockDB.date.getDayOfYear() < day || stockDB.date.getYear() < year)) {
+//                repository.deleteById(stockDB.id);
+//            }
+//
+//            if(repository.findByFunctionAndSymbolAndInterval("intraday", symbol, interval) == null) {
+//                ans = sms.stockInfo("TIME_SERIES_INTRADAY", symbol, interval);
+//                repository.save(new Stock("intraday", symbol, interval, ans));
+////                System.out.println("llamo API externo");
+//            } else {
+//                ans = repository.findByFunctionAndSymbolAndInterval("intraday", symbol, interval).info;
+////                System.out.println("llamo DB externa");
+//            }
             return new ResponseEntity<>(ans, HttpStatus.ACCEPTED);
 //            return new ResponseEntity<>(sms.stockInfo("TIME_SERIES_INTRADAY", symbol, interval), HttpStatus.ACCEPTED);
         } catch (Exception e) {
@@ -55,15 +78,32 @@ public class StockMarketController {
             } else {
                 f = function;
             }
+            LocalDateTime now = LocalDateTime.now();
+            int day = now.getDayOfYear();
+            int year = now.getYear();
+            Stock stockDB = repository.findByFunctionAndSymbolAndInterval(function, symbol, "");
             String ans;
-            if(repository.findByFunctionAndSymbolAndInterval(function, symbol, "") == null) {
-                ans = sms.stockInfo(f, symbol, "");
-                repository.save(new Stock(function, symbol, "", ans));
-//                System.out.println("llamo API externo");
+            if(stockDB != null) {
+                if(stockDB.date.getDayOfYear() < day || stockDB.date.getYear() < year) {
+                    repository.deleteById(stockDB.id);
+                    ans = sms.stockInfo(f, symbol, "");
+                    repository.save(new Stock(now, function, symbol, "", ans));
+                } else {
+                    ans = stockDB.info;
+                }
             } else {
-                ans = repository.findByFunctionAndSymbolAndInterval(function, symbol, "").info;
-//                System.out.println("llamo DB externa");
+                ans = sms.stockInfo(f, symbol, "");
+                repository.save(new Stock(now, function, symbol, "", ans));
             }
+
+//            if(repository.findByFunctionAndSymbolAndInterval(function, symbol, "") == null) {
+//                ans = sms.stockInfo(f, symbol, "");
+//                repository.save(new Stock(function, symbol, "", ans));
+////                System.out.println("llamo API externo");
+//            } else {
+//                ans = repository.findByFunctionAndSymbolAndInterval(function, symbol, "").info;
+////                System.out.println("llamo DB externa");
+//            }
             return new ResponseEntity<>(ans, HttpStatus.ACCEPTED);
 //            return new ResponseEntity<>(sms.stockInfo(f, symbol, ""), HttpStatus.ACCEPTED);
         } catch (Exception e) {
